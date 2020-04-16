@@ -1,0 +1,9 @@
+Username: 8wdwbHzKHP
+
+Database name: 8wdwbHzKHP
+
+Password: kPRONAzKzw
+
+Server: remotemysql.com
+
+Port: 3306
