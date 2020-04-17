@@ -24,6 +24,9 @@ namespace SmileHotel.sRepositories
             while(DataReader.Read())
             {
                 User ToAdd = new User();
+                ToAdd.Id = DataReader.GetInt32(0);
+                ToAdd.Name = DataReader.GetString(1);
+                ToAdd.PhoneNumber = DataReader.GetString(2);
                 users.Add(ToAdd);
             }
             cnn.Close();
@@ -42,6 +45,9 @@ namespace SmileHotel.sRepositories
             SqlCommand SqlQuery = new SqlCommand(query, cnn);
             DataReader = SqlQuery.ExecuteReader();
             DataReader.Read();
+            user.Id = DataReader.GetInt32(0);
+            user.Name = DataReader.GetString(1);
+            user.PhoneNumber = DataReader.GetString(2);
             cnn.Close();
             return user;
         }
@@ -50,11 +56,24 @@ namespace SmileHotel.sRepositories
         {
             if (user.Id <= 0)
             {
-                // TODO: Add user
+                query = "INSERT Users (ID,Name,PhoneNumber)" +
+                    "VALUES (SELECT ID FROM Users WHERE id = max(ID) + 1, " + user.Name + ", " + user.PhoneNumber + ")";
+                cnn = new SqlConnection(connetionString);
+                cnn.Open();
+                SqlCommand SqlQuery = new SqlCommand(query, cnn);
+                SqlQuery.ExecuteNonQuery();
+                cnn.Close();
             }
             else
             {
                 // TODO: Update user
+                query = "UPDARE Users" +
+                    "SET Name =" + user.Name + ",PhoneNumber =" + user.PhoneNumber + "WHERE ID =" + user.Id + ";";
+                cnn = new SqlConnection(connetionString);
+                cnn.Open();
+                SqlCommand SqlQuery = new SqlCommand(query, cnn);
+                SqlQuery.ExecuteNonQuery();
+                cnn.Close();
             }
 
             // TODO: Map back to param user and return it
@@ -66,7 +85,19 @@ namespace SmileHotel.sRepositories
         {
             // TODO: Delete user
             // TODO: Use try catch to see if SQL was made successfully
-
+            try
+            {
+                query = "SELECT * FROM Users WHERE ID = ";
+                cnn = new SqlConnection(connetionString);
+                cnn.Open();
+                SqlCommand SqlQuery = new SqlCommand(query, cnn);
+                SqlQuery.ExecuteNonQuery();
+                cnn.Close();
+            }
+            catch (SqlException e)
+            {
+                return false;
+            }
             return true;
         }
     }
