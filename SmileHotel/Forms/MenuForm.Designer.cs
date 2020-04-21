@@ -50,7 +50,7 @@
             this.exitMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(625, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(447, 28);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -70,6 +70,7 @@
             this.roomsMenuItem.Name = "roomsMenuItem";
             this.roomsMenuItem.Size = new System.Drawing.Size(55, 24);
             this.roomsMenuItem.Text = "Стаи";
+            this.roomsMenuItem.Click += new System.EventHandler(this.RoomsMenuItem_Click);
             // 
             // customersMenuItem
             // 
@@ -82,19 +83,20 @@
             this.usersMenuItem.Name = "usersMenuItem";
             this.usersMenuItem.Size = new System.Drawing.Size(115, 24);
             this.usersMenuItem.Text = "Потребители";
+            this.usersMenuItem.Click += new System.EventHandler(this.UsersMenuItem_Click);
             // 
             // exitMenuItem
             // 
             this.exitMenuItem.Name = "exitMenuItem";
             this.exitMenuItem.Size = new System.Drawing.Size(65, 24);
             this.exitMenuItem.Text = "Изход";
-            this.exitMenuItem.Click += new System.EventHandler(this.exitMenuItem_Click);
+            this.exitMenuItem.Click += new System.EventHandler(this.ExitMenuItem_Click);
             // 
             // MenuForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(625, 32);
+            this.ClientSize = new System.Drawing.Size(447, 32);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MenuForm";
