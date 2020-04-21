@@ -33,7 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MySql.Data, Version=8.0.19.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="MySql.Data, Version=6.9.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.8\lib\net45\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -83,6 +85,12 @@
     <Compile Include="Forms\RoomsForm.Designer.cs">
       <DependentUpon>RoomsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\UserAddEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UserAddEditForm.Designer.cs">
+      <DependentUpon>UserAddEditForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\UsersForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +119,12 @@
     <EmbeddedResource Include="Forms\RoomsForm.resx">
       <DependentUpon>RoomsForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UserAddEditForm.resx">
+      <DependentUpon>UserAddEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UsersForm.resx">
+      <DependentUpon>UsersForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -120,6 +134,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\DataSources\SmileHotel.Models.Client.datasource" />
     <None Include="Properties\DataSources\SmileHotel.Models.Reservation.datasource" />
     <None Include="Properties\DataSources\SmileHotel.Models.Room.datasource" />

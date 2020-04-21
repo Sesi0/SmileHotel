@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using SmileHotel.Models;
-using System.Data;
 using System.Data.SqlClient;
 using MySql.Data.MySqlClient;
+using SmileHotel.Models;
 
 namespace SmileHotel.Repositories
 {
@@ -11,26 +10,29 @@ namespace SmileHotel.Repositories
         private string connetionString = @"server=remotemysql.com;database=8wdwbHzKHP;UID=8wdwbHzKHP;password=kPRONAzKzw";
         private MySqlConnection cnn;
         private string query;
-        private MySqlDataReader DataReader;
+        private MySqlDataReader dataReader;
+
         public List<User> GetAllUsers()
         {
             var users = new List<User>();
 
-            // TODO: Get users from DB
-            query = "SELECT * FROM Users;";
-            cnn = new MySqlConnection(connetionString);
-            cnn.Open();
-            MySqlCommand SqlQuery = new MySqlCommand(query, cnn);
-            DataReader = SqlQuery.ExecuteReader();
-            while(DataReader.Read())
+            this.query = "SELECT * FROM Users;";
+            this.cnn = new MySqlConnection(this.connetionString);
+            this.cnn.Open();
+
+            MySqlCommand SqlQuery = new MySqlCommand(this.query, this.cnn);
+            this.dataReader = SqlQuery.ExecuteReader();
+            
+            while(this.dataReader.Read())
             {
-                User ToAdd = new User();
-                ToAdd.Id = DataReader.GetInt32(0);
-                ToAdd.Name = DataReader.GetString(1);
-                ToAdd.PhoneNumber = DataReader.GetString(2);
-                users.Add(ToAdd);
+                User userToAdd = new User();
+                userToAdd.Id = this.dataReader.GetInt32(0);
+                userToAdd.Name = this.dataReader.GetString(1);
+                userToAdd.PhoneNumber = this.dataReader.GetString(2);
+                users.Add(userToAdd);
             }
-            cnn.Close();
+
+            this.cnn.Close();
 
             return users;
         }
@@ -39,17 +41,18 @@ namespace SmileHotel.Repositories
         {
             var user = new User();
 
-            // TODO: Get user from DB
-            query = "SELECT * FROM Users WHERE ID = " + id.ToString() + ";";
-            cnn = new MySqlConnection(connetionString);
-            cnn.Open();
-            MySqlCommand SqlQuery = new MySqlCommand(query, cnn);
-            DataReader = SqlQuery.ExecuteReader();
-            DataReader.Read();
-            user.Id = DataReader.GetInt32(0);
-            user.Name = DataReader.GetString(1);
-            user.PhoneNumber = DataReader.GetString(2);
-            cnn.Close();
+            this.query = "SELECT * FROM Users WHERE ID = " + id + ";";
+            this.cnn = new MySqlConnection(this.connetionString);
+            this.cnn.Open();
+
+            MySqlCommand SqlQuery = new MySqlCommand(this.query, this.cnn);
+            this.dataReader = SqlQuery.ExecuteReader();
+            this.dataReader.Read();
+            user.Id = this.dataReader.GetInt32(0);
+            user.Name = this.dataReader.GetString(1);
+            user.PhoneNumber = this.dataReader.GetString(2);
+            this.cnn.Close();
+
             return user;
         }
 
@@ -57,7 +60,8 @@ namespace SmileHotel.Repositories
         {
             if (user.Id <= 0)
             {
-                List<User> users = GetAllUsers();
+                List<User> users = this.GetAllUsers();
+
                 int maxID = 0;
                 foreach(User user1 in users)
                 {
@@ -66,49 +70,50 @@ namespace SmileHotel.Repositories
                         maxID = user1.Id;
                     }
                 }
+
                 maxID++;
-                query = "INSERT INTO Users (`ID`, `Name`, `PhoneNumber`) VALUES ('"+ maxID.ToString() +"','" + user.Name + "', '" + user.PhoneNumber + "');";
-                cnn = new MySqlConnection(connetionString);
-                cnn.Open();
-                MySqlCommand SqlQuery = new MySqlCommand(query, cnn);
+
+                this.query = "INSERT INTO Users (`ID`, `Name`, `PhoneNumber`) VALUES ('"+ maxID.ToString() +"','" + user.Name + "', '" + user.PhoneNumber + "');";
+                this.cnn = new MySqlConnection(this.connetionString);
+                this.cnn.Open();
+                
+                MySqlCommand SqlQuery = new MySqlCommand(this.query, this.cnn);
                 SqlQuery.ExecuteNonQuery();
-                cnn.Close();
+                this.cnn.Close();
             }
             else
             {
-                // TODO: Update user
-                query = "UPDATE Users " +
+                this.query = "UPDATE Users " +
                     "SET Name = '" + user.Name + "' , PhoneNumber = '" + user.PhoneNumber + "'" +
-                    " WHERE ID = " + user.Id.ToString() + ";";
-                cnn = new MySqlConnection(connetionString);
-                cnn.Open();
-                MySqlCommand SqlQuery = new MySqlCommand(query, cnn);
+                    " WHERE ID = " + user.Id + ";";
+                
+                this.cnn = new MySqlConnection(this.connetionString);
+                this.cnn.Open();
+                MySqlCommand SqlQuery = new MySqlCommand(this.query, this.cnn);
                 SqlQuery.ExecuteNonQuery();
-                cnn.Close();
+                this.cnn.Close();
             }
-
-            // TODO: Map back to param user and return it
 
             return user;
         }
 
         public bool DeleteUser(int id)
         {
-            // TODO: Delete user
-            // TODO: Use try catch to see if SQL was made successfully
             try
             {
-                query = "DELETE FROM Users WHERE ID = " + id.ToString() + ";";
-                cnn = new MySqlConnection(connetionString);
-                cnn.Open();
-                MySqlCommand SqlQuery = new MySqlCommand(query, cnn);
+                this.query = "DELETE FROM Users WHERE ID = " + id.ToString() + ";";
+                this.cnn = new MySqlConnection(this.connetionString);
+                this.cnn.Open();
+            
+                MySqlCommand SqlQuery = new MySqlCommand(this.query, this.cnn);
                 SqlQuery.ExecuteNonQuery();
-                cnn.Close();
+                this.cnn.Close();
             }
             catch (SqlException e)
             {
                 return false;
             }
+
             return true;
         }
     }

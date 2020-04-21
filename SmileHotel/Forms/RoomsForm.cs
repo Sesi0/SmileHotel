@@ -30,7 +30,7 @@ namespace SmileHotel.Forms
             }
 
             this.roomRepository.DeleteRoom(selectedRoom.Id);
-            this.roomBindingSource.Remove(selectedRoom);
+            this.roomBindingSource.RemoveCurrent();
         }
 
         private void AddRoomButton_Click(object sender, System.EventArgs e)
@@ -52,7 +52,15 @@ namespace SmileHotel.Forms
 
         private void EditRoomButton_Click(object sender, System.EventArgs e)
         {
-            var editForm = new RoomAddEditForm((Room) this.roomBindingSource.Current);
+            var selectedRoom = (Room)this.roomBindingSource.Current;
+
+            if (selectedRoom == null)
+            {
+                MessageBox.Show("Не е избрана стая за редакция!");
+                return;
+            }
+
+            var editForm = new RoomAddEditForm(selectedRoom);
             editForm.ShowDialog();
 
             if (editForm.DialogResult == DialogResult.OK)

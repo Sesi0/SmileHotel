@@ -83,6 +83,7 @@
             this.usersMenuItem.Name = "usersMenuItem";
             this.usersMenuItem.Size = new System.Drawing.Size(115, 24);
             this.usersMenuItem.Text = "Потребители";
+            this.usersMenuItem.Click += new System.EventHandler(this.UsersMenuItem_Click);
             // 
             // exitMenuItem
             // 

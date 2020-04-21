@@ -22,13 +22,16 @@ namespace SmileHotel.Forms
 
         private void RoomsMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.roomsForm == null)
-            {
-                this.roomsForm = new RoomsForm();
-            }
-
+            this.roomsForm = new RoomsForm();
             this.roomsForm.WindowState = FormWindowState.Normal;
             this.roomsForm.Show();
+        }
+
+        private void UsersMenuItem_Click(object sender, EventArgs e)
+        {
+            this.userForm = new UsersForm();
+            this.userForm.WindowState = FormWindowState.Normal;
+            this.userForm.Show();
         }
     }
 }
