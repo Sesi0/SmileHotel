@@ -15,13 +15,6 @@ namespace SmileHotel
         [STAThread]
         static void Main()
         {
-
-            User newUSer = new User();
-            UserRepository userRepository = new UserRepository();
-            if(userRepository.DeleteUser(8))
-            {
-                MessageBox.Show("Success");
-            }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new LoginForm());
