@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using SmileHotel.Helpers;
 using SmileHotel.Models;
 
 namespace SmileHotel.Forms
@@ -18,6 +19,7 @@ namespace SmileHotel.Forms
             {
                 this.nameTextBox.Text = user.Name;
                 this.phoneNumberTextBox.Text = user.PhoneNumber;
+                this.passwordMaskedTextBox.Text = user.Password;
             }
 
             this.User = user;
@@ -31,6 +33,7 @@ namespace SmileHotel.Forms
             {
                 this.User.Name = this.nameTextBox.Text;
                 this.User.PhoneNumber = this.phoneNumberTextBox.Text;
+                this.User.Password = CryptoHelper.GetMd5Hash(this.passwordMaskedTextBox.Text);
 
                 if (!this.User.IsValid())
                 {

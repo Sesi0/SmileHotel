@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SmileHotel.Helpers;
 
 namespace SmileHotel.Forms
 {
@@ -22,10 +23,11 @@ namespace SmileHotel.Forms
             try
             {
                 string username = this.usenameTextBox.Text;
-                string password = this.passwordMaskedTextBox.Text;
-                bool isSuccessful = true;
+                string password = CryptoHelper.GetMd5Hash(this.passwordMaskedTextBox.Text);
 
                 // TODO: Make a call to SQL to check for existing user.
+                bool isSuccessful = true;
+
                 if (isSuccessful)
                 {
                     var form = new MenuForm();

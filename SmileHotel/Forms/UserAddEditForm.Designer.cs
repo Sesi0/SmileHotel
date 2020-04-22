@@ -33,6 +33,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.phoneNumberTextBox = new System.Windows.Forms.TextBox();
             this.addEditButton = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.passwordMaskedTextBox = new System.Windows.Forms.MaskedTextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -74,7 +76,7 @@
             this.addEditButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.addEditButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.addEditButton.ForeColor = System.Drawing.Color.White;
-            this.addEditButton.Location = new System.Drawing.Point(16, 124);
+            this.addEditButton.Location = new System.Drawing.Point(12, 172);
             this.addEditButton.Name = "addEditButton";
             this.addEditButton.Size = new System.Drawing.Size(129, 40);
             this.addEditButton.TabIndex = 7;
@@ -82,11 +84,31 @@
             this.addEditButton.UseVisualStyleBackColor = false;
             this.addEditButton.Click += new System.EventHandler(this.AddEditButton_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(16, 113);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(58, 17);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Парола";
+            // 
+            // passwordMaskedTextBox
+            // 
+            this.passwordMaskedTextBox.Location = new System.Drawing.Point(19, 134);
+            this.passwordMaskedTextBox.Name = "passwordMaskedTextBox";
+            this.passwordMaskedTextBox.PasswordChar = '*';
+            this.passwordMaskedTextBox.Size = new System.Drawing.Size(126, 22);
+            this.passwordMaskedTextBox.TabIndex = 9;
+            this.passwordMaskedTextBox.UseSystemPasswordChar = true;
+            // 
             // UserAddEditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(173, 187);
+            this.ClientSize = new System.Drawing.Size(155, 234);
+            this.Controls.Add(this.passwordMaskedTextBox);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.addEditButton);
             this.Controls.Add(this.phoneNumberTextBox);
             this.Controls.Add(this.label2);
@@ -105,5 +127,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox phoneNumberTextBox;
         private System.Windows.Forms.Button addEditButton;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.MaskedTextBox passwordMaskedTextBox;
     }
 }

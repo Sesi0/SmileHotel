@@ -8,9 +8,12 @@
 
         public string PhoneNumber { get; set; }
 
+        public string Password { get; set; }
+
         public bool IsValid()
         {
             if (string.IsNullOrEmpty(this.Name) ||
+            if (string.IsNullOrEmpty(this.Password) ||
                 string.IsNullOrEmpty(this.PhoneNumber))
             {
                 return false;
