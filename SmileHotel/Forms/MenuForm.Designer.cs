@@ -64,6 +64,7 @@
             this.reservationsMenuItem.Name = "reservationsMenuItem";
             this.reservationsMenuItem.Size = new System.Drawing.Size(106, 24);
             this.reservationsMenuItem.Text = "Резервации";
+            this.reservationsMenuItem.Click += new System.EventHandler(this.ReservationsMenuItem_Click);
             // 
             // roomsMenuItem
             // 
@@ -77,6 +78,7 @@
             this.customersMenuItem.Name = "customersMenuItem";
             this.customersMenuItem.Size = new System.Drawing.Size(81, 24);
             this.customersMenuItem.Text = "Клиенти";
+            this.customersMenuItem.Click += new System.EventHandler(this.ClientsMenuItem_Click);
             // 
             // usersMenuItem
             // 

@@ -15,5 +15,19 @@ namespace SmileHotel.Models
         public DateTime StartDate { get; set; }
 
         public int Duration { get; set; }
+
+        public bool IsValid()
+        {
+            if (this.Client == null ||
+                this.Room == null ||
+                this.User == null ||
+                this.StartDate <= DateTime.Now ||
+                this.Duration <= 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

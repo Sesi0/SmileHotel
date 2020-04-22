@@ -33,5 +33,19 @@ namespace SmileHotel.Forms
             this.userForm.WindowState = FormWindowState.Normal;
             this.userForm.Show();
         }
+
+        private void ClientsMenuItem_Click(object sender, EventArgs e)
+        {
+            this.clientForm = new ClientsForm();
+            this.clientForm.WindowState = FormWindowState.Normal;
+            this.clientForm.Show();
+        }
+
+        private void ReservationsMenuItem_Click(object sender, EventArgs e)
+        {
+            this.reservationsForm = new ReservationsForm();
+            this.reservationsForm.WindowState = FormWindowState.Normal;
+            this.reservationsForm.Show();
+        }
     }
 }

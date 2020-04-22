@@ -68,6 +68,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Compoentns\ExtendedDataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\ClientAddEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ClientAddEditForm.Designer.cs">
+      <DependentUpon>ClientAddEditForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ClientsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,6 +94,12 @@
     </Compile>
     <Compile Include="Forms\MenuForm.Designer.cs">
       <DependentUpon>MenuForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ReservationAddEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ReservationAddEditForm.Designer.cs">
+      <DependentUpon>ReservationAddEditForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ReservationsForm.cs">
       <SubType>Form</SubType>
@@ -116,6 +131,7 @@
     <Compile Include="Forms\UsersForm.Designer.cs">
       <DependentUpon>UsersForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\SessionHelper.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\Reservation.cs" />
     <Compile Include="Models\Room.cs" />
@@ -126,11 +142,23 @@
     <Compile Include="Repositories\ReservationRepository.cs" />
     <Compile Include="Repositories\ClientRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
+    <EmbeddedResource Include="Forms\ClientAddEditForm.resx">
+      <DependentUpon>ClientAddEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ClientsForm.resx">
+      <DependentUpon>ClientsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MenuForm.resx">
       <DependentUpon>MenuForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ReservationAddEditForm.resx">
+      <DependentUpon>ReservationAddEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ReservationsForm.resx">
+      <DependentUpon>ReservationsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\RoomAddEditForm.resx">
       <DependentUpon>RoomAddEditForm.cs</DependentUpon>
