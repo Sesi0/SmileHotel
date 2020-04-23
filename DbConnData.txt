@@ -1,9 +1,9 @@
-Username: 8wdwbHzKHP
+Username: smilehoteluser
 
-Database name: 8wdwbHzKHP
+Database name: smilehotel
 
-Password: kPRONAzKzw
+Password: 3_MyZxzwFFu5_kg
 
-Server: remotemysql.com
+Server: db4free.net
 
 Port: 3306

@@ -8,7 +8,7 @@ namespace SmileHotel.Repositories
     public class RoomRepository
     {
 
-        private string connetionString = @"server=remotemysql.com;database=8wdwbHzKHP;UID=8wdwbHzKHP;password=kPRONAzKzw";
+        private string connetionString = @"server=db4free.net;database=smilehotel;UID=smilehoteluser;password=3_MyZxzwFFu5_kg";
         private MySqlConnection cnn;
         private string query;
         private MySqlDataReader DataReader;
@@ -109,7 +109,7 @@ namespace SmileHotel.Repositories
                 SqlQuery.ExecuteNonQuery();
                 cnn.Close();
             }
-            catch (SqlException e)
+            catch (MySqlException e)
             {
                 return false;
             }
