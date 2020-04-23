@@ -60,9 +60,9 @@ namespace SmileHotel.Repositories
 
         public User GetUserWithPassword(string Name, string Password)
         {
-            var user = new User();
             try
             {
+                var user = new User();
                 this.query = "SELECT * FROM Users WHERE Name = " + Name + " AND Password = " + Password + ";";
                 this.cnn = new MySqlConnection(this.connetionString);
                 this.cnn.Open();
@@ -74,12 +74,12 @@ namespace SmileHotel.Repositories
                 user.PhoneNumber = this.dataReader.GetString(2);
                 user.Password = this.dataReader.GetString(3);
                 this.cnn.Close();
+                return user;
             }
             catch(MySqlException e)
             {
-
+                return null;
             }
-            return user;
         }
 
         public User AddOrUpdateUser(User user)
