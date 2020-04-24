@@ -30,6 +30,10 @@ namespace SmileHotel.Forms
                     form.Show();
                     this.Hide();
                 }
+                else
+                {
+                    MessageBox.Show("Грешен потребител и/или парола!");
+                }
             }
             catch
             {
