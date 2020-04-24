@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using SmileHotel.Helpers;
+using SmileHotel.Repositories;
 
 namespace SmileHotel.Forms
 {
@@ -25,11 +19,12 @@ namespace SmileHotel.Forms
                 string username = this.usenameTextBox.Text;
                 string password = CryptoHelper.GetMd5Hash(this.passwordMaskedTextBox.Text);
 
-                // TODO: Make a call to SQL to check for existing user.
-                bool isSuccessful = true;
+                var userRepository = new UserRepository();
+                var user = userRepository.GetUserWithPassword(username, password);
 
-                if (isSuccessful)
+                if (user != null)
                 {
+                    SessionHelper.User = user;
                     var form = new MenuForm();
                     form.FormClosed += (o, args) => this.Show();
                     form.Show();

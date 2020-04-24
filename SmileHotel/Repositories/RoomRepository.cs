@@ -2,6 +2,7 @@
 using SmileHotel.Models;
 using System.Data.SqlClient;
 using MySql.Data.MySqlClient;
+using System.Globalization;
 
 namespace SmileHotel.Repositories
 {
@@ -71,7 +72,7 @@ namespace SmileHotel.Repositories
                     }
                 }
                 maxID++;
-                query = "INSERT INTO Rooms (`ID`, `RoomNumber`, `RoomCapacity`, `PricePerNight`) VALUES ('" + maxID.ToString() + "','" + room.Number + "', '" + room.Capacity.ToString() + "' , '" + room.PricePerNight.ToString() + "');";
+                query = "INSERT INTO Rooms (`ID`, `RoomNumber`, `RoomCapacity`, `PricePerNight`) VALUES ('" + maxID.ToString() + "','" + room.Number + "', '" + room.Capacity.ToString() + "' , '" + room.PricePerNight.ToString("F", CultureInfo.CreateSpecificCulture("en-US")) + "');";
                 cnn = new MySqlConnection(connetionString);
                 cnn.Open();
                 MySqlCommand SqlQuery = new MySqlCommand(query, cnn);

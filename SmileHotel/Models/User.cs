@@ -13,7 +13,7 @@
         public bool IsValid()
         {
             if (string.IsNullOrEmpty(this.Name) ||
-            if (string.IsNullOrEmpty(this.Password) ||
+                string.IsNullOrEmpty(this.Password) ||
                 string.IsNullOrEmpty(this.PhoneNumber))
             {
                 return false;

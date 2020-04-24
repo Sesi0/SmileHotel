@@ -7,7 +7,7 @@ namespace SmileHotel.Repositories
 {
     public class UserRepository
     {
-        private string connetionString = @"server=db4free.net;database=smilehotel;UID=smilehoteluser;password=3_MyZxzwFFu5_kg";
+        private string connetionString = @"server=db4free.net;database=smilehotel;UID=smilehoteluser;password=3_MyZxzwFFu5_kg;";
         private MySqlConnection cnn;
         private string query;
         private MySqlDataReader dataReader;
@@ -63,7 +63,7 @@ namespace SmileHotel.Repositories
             try
             {
                 var user = new User();
-                this.query = "SELECT * FROM Users WHERE Name = " + Name + " AND Password = " + Password + ";";
+                this.query = "SELECT * FROM Users WHERE Name = '" + Name + "' AND Password = '" + Password + "';";
                 this.cnn = new MySqlConnection(this.connetionString);
                 this.cnn.Open();
                 MySqlCommand SqlQuery = new MySqlCommand(this.query, this.cnn);
