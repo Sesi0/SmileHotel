@@ -3,14 +3,12 @@ using SmileHotel.Models;
 using System.Data.SqlClient;
 using MySql.Data.MySqlClient;
 using System.Globalization;
+using SmileHotel.Helpers;
 
 namespace SmileHotel.Repositories
 {
     public class RoomRepository
     {
-
-        private string connetionString = @"server=db4free.net;database=smilehotel;UID=smilehoteluser;password=3_MyZxzwFFu5_kg";
-        private MySqlConnection cnn;
         private string query;
         private MySqlDataReader DataReader;
         public List<Room> GetAllRooms()
@@ -19,20 +17,18 @@ namespace SmileHotel.Repositories
 
             // TODO: Get rooms from DB
             query = "SELECT * FROM Rooms;";
-            cnn = new MySqlConnection(connetionString);
-            cnn.Open();
-            MySqlCommand SqlQuery = new MySqlCommand(query, cnn);
+            MySqlCommand SqlQuery = new MySqlCommand(query, SessionHelper.cnn);
             DataReader = SqlQuery.ExecuteReader();
             while (DataReader.Read())
             {
                 Room ToAdd = new Room();
                 ToAdd.Id = DataReader.GetInt32(0);
-                ToAdd.Number = DataReader.GetString(1);
+                ToAdd.Number = DataReader.GetInt32(1).ToString();
                 ToAdd.Capacity = DataReader.GetInt32(2);
                 ToAdd.PricePerNight = DataReader.GetFloat(3);
                 rooms.Add(ToAdd);
             }
-            cnn.Close();
+            DataReader.Close();
 
             return rooms;
         }
@@ -44,16 +40,14 @@ namespace SmileHotel.Repositories
             // TODO: Get room from DB
 
             query = "SELECT * FROM Rooms WHERE ID = " + id.ToString() + ";";
-            cnn = new MySqlConnection(connetionString);
-            cnn.Open();
-            MySqlCommand SqlQuery = new MySqlCommand(query, cnn);
+            MySqlCommand SqlQuery = new MySqlCommand(query, SessionHelper.cnn);
             DataReader = SqlQuery.ExecuteReader();
-            DataReader.Read();
+            DataReader.ReadAsync();
             room.Id = DataReader.GetInt32(0);
             room.Number = DataReader.GetString(1);
             room.Capacity = DataReader.GetInt32(2);
             room.PricePerNight = DataReader.GetFloat(3);
-            cnn.Close();
+            DataReader.Close();
             return room;
         }
 
@@ -73,11 +67,8 @@ namespace SmileHotel.Repositories
                 }
                 maxID++;
                 query = "INSERT INTO Rooms (`ID`, `RoomNumber`, `RoomCapacity`, `PricePerNight`) VALUES ('" + maxID.ToString() + "','" + room.Number + "', '" + room.Capacity.ToString() + "' , '" + room.PricePerNight.ToString("F", CultureInfo.CreateSpecificCulture("en-US")) + "');";
-                cnn = new MySqlConnection(connetionString);
-                cnn.Open();
-                MySqlCommand SqlQuery = new MySqlCommand(query, cnn);
+                MySqlCommand SqlQuery = new MySqlCommand(query, SessionHelper.cnn);
                 SqlQuery.ExecuteNonQuery();
-                cnn.Close();
             }
             else
             {
@@ -85,14 +76,9 @@ namespace SmileHotel.Repositories
                 query = "UPDATE Rooms " +
                     "SET RoomNumber = '" + room.Number + "' , RoomCapacity = '" + room.Capacity.ToString() + "' , PricePerNight = '" + room.PricePerNight.ToString() + "'" +
                     " WHERE ID = " + room.Id.ToString() + ";";
-                cnn = new MySqlConnection(connetionString);
-                cnn.Open();
-                MySqlCommand SqlQuery = new MySqlCommand(query, cnn);
+                MySqlCommand SqlQuery = new MySqlCommand(query, SessionHelper.cnn);
                 SqlQuery.ExecuteNonQuery();
-                cnn.Close();
             }
-
-            // TODO: Map back to param room and return it
 
             return room;
         }
@@ -104,11 +90,8 @@ namespace SmileHotel.Repositories
             try
             {
                 query = "DELETE FROM Rooms WHERE ID = " + id.ToString() + ";";
-                cnn = new MySqlConnection(connetionString);
-                cnn.Open();
-                MySqlCommand SqlQuery = new MySqlCommand(query, cnn);
+                MySqlCommand SqlQuery = new MySqlCommand(query, SessionHelper.cnn);
                 SqlQuery.ExecuteNonQuery();
-                cnn.Close();
             }
             catch (MySqlException e)
             {

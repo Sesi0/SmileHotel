@@ -2,13 +2,11 @@
 using System.Data.SqlClient;
 using MySql.Data.MySqlClient;
 using SmileHotel.Models;
-
+using SmileHotel.Helpers;
 namespace SmileHotel.Repositories
 {
     public class UserRepository
     {
-        private string connetionString = @"server=db4free.net;database=smilehotel;UID=smilehoteluser;password=3_MyZxzwFFu5_kg;";
-        private MySqlConnection cnn;
         private string query;
         private MySqlDataReader dataReader;
 
@@ -17,10 +15,7 @@ namespace SmileHotel.Repositories
             var users = new List<User>();
 
             this.query = "SELECT * FROM Users;";
-            this.cnn = new MySqlConnection(this.connetionString);
-            this.cnn.Open();
-
-            MySqlCommand SqlQuery = new MySqlCommand(this.query, this.cnn);
+            MySqlCommand SqlQuery = new MySqlCommand(this.query, SessionHelper.cnn);
             this.dataReader = SqlQuery.ExecuteReader();
 
             while (this.dataReader.Read())
@@ -33,7 +28,7 @@ namespace SmileHotel.Repositories
                 users.Add(userToAdd);
             }
 
-            this.cnn.Close();
+            dataReader.Close();
 
             return users;
         }
@@ -43,17 +38,14 @@ namespace SmileHotel.Repositories
             var user = new User();
 
             this.query = "SELECT * FROM Users WHERE ID = " + id + ";";
-            this.cnn = new MySqlConnection(this.connetionString);
-            this.cnn.Open();
-
-            MySqlCommand SqlQuery = new MySqlCommand(this.query, this.cnn);
+            MySqlCommand SqlQuery = new MySqlCommand(this.query, SessionHelper.cnn);
             this.dataReader = SqlQuery.ExecuteReader();
             this.dataReader.Read();
             user.Id = this.dataReader.GetInt32(0);
             user.Name = this.dataReader.GetString(1);
             user.PhoneNumber = this.dataReader.GetString(2);
             user.Password = this.dataReader.GetString(3);
-            this.cnn.Close();
+            dataReader.Close();
 
             return user;
         }
@@ -64,16 +56,13 @@ namespace SmileHotel.Repositories
             {
                 var user = new User();
                 this.query = "SELECT * FROM Users WHERE Name = '" + Name + "' AND Password = '" + Password + "';";
-                this.cnn = new MySqlConnection(this.connetionString);
-                this.cnn.Open();
-                MySqlCommand SqlQuery = new MySqlCommand(this.query, this.cnn);
+                MySqlCommand SqlQuery = new MySqlCommand(this.query, SessionHelper.cnn);
                 this.dataReader = SqlQuery.ExecuteReader();
                 this.dataReader.Read();
                 user.Id = this.dataReader.GetInt32(0);
                 user.Name = this.dataReader.GetString(1);
                 user.PhoneNumber = this.dataReader.GetString(2);
                 user.Password = this.dataReader.GetString(3);
-                this.cnn.Close();
                 return user;
             }
             catch(MySqlException e)
@@ -100,24 +89,16 @@ namespace SmileHotel.Repositories
                 maxID++;
 
                 this.query = "INSERT INTO Users (`ID`, `Name`, `PhoneNumber`, `Password`) VALUES ('" + maxID.ToString() + "','" + user.Name + "', '" + user.PhoneNumber + "', '" +user.Password + "');";
-                this.cnn = new MySqlConnection(this.connetionString);
-                this.cnn.Open();
-
-                MySqlCommand SqlQuery = new MySqlCommand(this.query, this.cnn);
+                MySqlCommand SqlQuery = new MySqlCommand(this.query, SessionHelper.cnn);
                 SqlQuery.ExecuteNonQuery();
-                this.cnn.Close();
             }
             else
             {
                 this.query = "UPDATE Users " +
                     "SET Name = '" + user.Name + "' , PhoneNumber = '" + user.PhoneNumber + "' Password = '" + user.Password + "'" +
                     " WHERE ID = " + user.Id + ";";
-
-                this.cnn = new MySqlConnection(this.connetionString);
-                this.cnn.Open();
-                MySqlCommand SqlQuery = new MySqlCommand(this.query, this.cnn);
+                MySqlCommand SqlQuery = new MySqlCommand(this.query, SessionHelper.cnn);
                 SqlQuery.ExecuteNonQuery();
-                this.cnn.Close();
             }
 
             return user;
@@ -128,12 +109,8 @@ namespace SmileHotel.Repositories
             try
             {
                 this.query = "DELETE FROM Users WHERE ID = " + id.ToString() + ";";
-                this.cnn = new MySqlConnection(this.connetionString);
-                this.cnn.Open();
-
-                MySqlCommand SqlQuery = new MySqlCommand(this.query, this.cnn);
+                MySqlCommand SqlQuery = new MySqlCommand(this.query, SessionHelper.cnn);
                 SqlQuery.ExecuteNonQuery();
-                this.cnn.Close();
             }
             catch (MySqlException e)
             {

@@ -4,7 +4,7 @@ using SmileHotel.Forms;
 using SmileHotel.Models;
 using SmileHotel.Repositories;
 using System.Collections.Generic;
-
+using SmileHotel.Helpers;
 namespace SmileHotel
 {
     static class Program
