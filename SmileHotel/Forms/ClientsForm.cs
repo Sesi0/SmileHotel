@@ -16,6 +16,11 @@ namespace SmileHotel.Forms
 
         private void ClientsForm_Load(object sender, System.EventArgs e)
         {
+            this.RefreshClients();
+        }
+
+        private void RefreshClients()
+        {
             this.clientBindingSource.DataSource = this.clientRepository.GetAllClients();
         }
 
@@ -44,8 +49,8 @@ namespace SmileHotel.Forms
 
                 if (client != null)
                 {
-                    client = this.clientRepository.AddOrUpdateClient(client);
-                    this.clientBindingSource.Add(client);
+                    this.clientRepository.AddOrUpdateClient(client);
+                    this.RefreshClients();
                 }
             }
         }
@@ -69,8 +74,8 @@ namespace SmileHotel.Forms
 
                 if (client != null)
                 {
-                    client = this.clientRepository.AddOrUpdateClient(client);
-                    this.clientBindingSource[this.clientBindingSource.Position] = client;
+                    this.clientRepository.AddOrUpdateClient(client);
+                    this.RefreshClients();
                 }
             }
         }

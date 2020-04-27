@@ -33,7 +33,11 @@ namespace SmileHotel.Forms
             {
                 this.User.Name = this.nameTextBox.Text;
                 this.User.PhoneNumber = this.phoneNumberTextBox.Text;
-                this.User.Password = CryptoHelper.GetMd5Hash(this.passwordMaskedTextBox.Text);
+
+                if (this.User.Password != this.passwordMaskedTextBox.Text)
+                {
+                    this.User.Password = CryptoHelper.GetMd5Hash(this.passwordMaskedTextBox.Text);
+                }
 
                 if (!this.User.IsValid())
                 {

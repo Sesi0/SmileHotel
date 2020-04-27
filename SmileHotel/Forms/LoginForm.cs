@@ -35,7 +35,7 @@ namespace SmileHotel.Forms
                     MessageBox.Show("Грешен потребител и/или парола!");
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 MessageBox.Show("Невалидни данни!", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             }

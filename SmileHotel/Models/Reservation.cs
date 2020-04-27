@@ -21,7 +21,7 @@ namespace SmileHotel.Models
             if (this.Client == null ||
                 this.Room == null ||
                 this.User == null ||
-                this.StartDate <= DateTime.Now ||
+                this.StartDate.Date < DateTime.Now.Date ||
                 this.Duration <= 0)
             {
                 return false;

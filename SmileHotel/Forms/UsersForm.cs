@@ -14,9 +14,14 @@ namespace SmileHotel.Forms
             this.userRepository = new UserRepository();
         }
 
-        private void UsersForm_Load(object sender, System.EventArgs e)
+        private void RefreshUsers()
         {
             this.userBindingSource.DataSource = this.userRepository.GetAllUsers();
+        }
+
+        private void UsersForm_Load(object sender, System.EventArgs e)
+        {
+            this.RefreshUsers();
         }
 
         private void DeleteUserButton_Click(object sender, System.EventArgs e)
@@ -44,8 +49,8 @@ namespace SmileHotel.Forms
 
                 if (user != null)
                 {
-                    user = this.userRepository.AddOrUpdateUser(user);
-                    this.userBindingSource.Add(user);
+                    this.userRepository.AddOrUpdateUser(user);
+                    this.RefreshUsers();
                 }
             }
         }
@@ -69,8 +74,8 @@ namespace SmileHotel.Forms
 
                 if (user != null)
                 {
-                    user = this.userRepository.AddOrUpdateUser(user);
-                    this.userBindingSource[this.userBindingSource.Position] = user;
+                    this.userRepository.AddOrUpdateUser(user);
+                    this.RefreshUsers();
                 }
             }
         }

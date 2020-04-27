@@ -2,97 +2,108 @@
 using SmileHotel.Models;
 using SmileHotel.Helpers;
 using MySql.Data.MySqlClient;
+using System;
+
 namespace SmileHotel.Repositories
 {
     public class ClientRepository
     {
         private string query;
-        private MySqlDataReader DataReader;
+
         public List<Client> GetAllClients()
         {
             var clients = new List<Client>();
+            this.query = "SELECT * FROM Clients;";
 
-            // TODO: Get clients from DB
-            query = "SELECT * FROM Clients;";
-            MySqlCommand SqlQuery = new MySqlCommand(query, SessionHelper.cnn);
-            DataReader = SqlQuery.ExecuteReader();
-            while (DataReader.Read())
+            using (var connection = RepositoryHelper.OpenMySQLConnetion())
+            using (var command = new MySqlCommand(this.query, connection))
+            using (var dataReader = command.ExecuteReader())
             {
-                Client ToAdd = new Client();
-                ToAdd.Id = DataReader.GetInt32(0);
-                ToAdd.Name = DataReader.GetString(1);
-                ToAdd.PersonalDocNumber = DataReader.GetString(2);
-                ToAdd.PhoneNumber = DataReader.GetString(3);
-                clients.Add(ToAdd);
+                while (dataReader.Read())
+                {
+                    Client toAdd = new Client();
+                    toAdd.Id = dataReader.GetInt32(0);
+                    toAdd.Name = dataReader.GetString(1);
+                    toAdd.PersonalDocNumber = dataReader.GetString(2);
+                    toAdd.PhoneNumber = dataReader.GetString(3);
+                    clients.Add(toAdd);
+                }
             }
-            DataReader.Close();
 
             return clients;
         }
 
         public Client GetClient(int id)
         {
-            var Client = new Client();
+            var client = new Client();
+            this.query = "SELECT * FROM Clients WHERE ID = " + id.ToString() + ";";
 
-            // TODO: Get Client from DB
-            query = "SELECT * FROM Clients WHERE ID = " + id.ToString() + ";";
-            MySqlCommand SqlQuery = new MySqlCommand(query, SessionHelper.cnn);
-            DataReader = SqlQuery.ExecuteReader();
-            DataReader.Read();
-            Client.Id = DataReader.GetInt32(0);
-            Client.Name = DataReader.GetString(1);
-            Client.PersonalDocNumber = DataReader.GetString(2);
-            Client.PhoneNumber = DataReader.GetString(3);
-            DataReader.Close();
-            return Client;
+            using (var connection = RepositoryHelper.OpenMySQLConnetion())
+            using (var command = new MySqlCommand(this.query, connection))
+            using (var dataReader = command.ExecuteReader())
+            {
+                dataReader.Read();
+                client.Id = dataReader.GetInt32(0);
+                client.Name = dataReader.GetString(1);
+                client.PersonalDocNumber = dataReader.GetString(2);
+                client.PhoneNumber = dataReader.GetString(3);
+            }
+            
+            return client;
         }
 
-        public Client AddOrUpdateClient(Client Client)
+        public Client AddOrUpdateClient(Client client)
         {
-            if (Client.Id <= 0)
+            if (client.Id <= 0)
             {
-                // TODO: Add Client
-                List<Client> clients = GetAllClients();
-                int maxID = 0;
+                List<Client> clients = this.GetAllClients();
+                int maxID = 1;
                 foreach (Client client1 in clients)
                 {
                     if (maxID < client1.Id)
                     {
                         maxID = client1.Id;
                     }
+
+                    maxID++;
                 }
-                maxID++;
-                query = "INSERT INTO Clients (`ID`, `Name`, `PersonalDocNumber`, `PhoneNumber`) VALUES ('" + maxID.ToString() + "','" + Client.Name + "', '" + Client.PersonalDocNumber + "' , '" + Client.PhoneNumber + "');";
-                MySqlCommand SqlQuery = new MySqlCommand(query, SessionHelper.cnn);
-                SqlQuery.ExecuteNonQuery();
+
+                this.query = "INSERT INTO Clients (`ID`, `Name`, `PersonalDocNumber`, `PhoneNumber`) VALUES ('" + maxID.ToString() + "','" + client.Name + "', '" + client.PersonalDocNumber + "' , '" + client.PhoneNumber + "');";
+                using (var connection = RepositoryHelper.OpenMySQLConnetion())
+                using (var command = new MySqlCommand(this.query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
             }
             else
             {
-                // TODO: Update Client
-                query = "UPDATE Clients " +
-                    "SET Name = '" + Client.Name + "' , PersonalDocNumber = '" + Client.PersonalDocNumber + "' , PhoneNumber = '" + Client.PhoneNumber + "'" +
-                    " WHERE ID = " + Client.Id.ToString() + ";";
-                MySqlCommand SqlQuery = new MySqlCommand(query, SessionHelper.cnn);
-                SqlQuery.ExecuteNonQuery();
+                this.query = "UPDATE Clients " +
+                    "SET Name = '" + client.Name + "' , PersonalDocNumber = '" + client.PersonalDocNumber + "' , PhoneNumber = '" + client.PhoneNumber + "'" +
+                    " WHERE ID = " + client.Id.ToString() + ";";
+                using (var connection = RepositoryHelper.OpenMySQLConnetion())
+                using (var command = new MySqlCommand(this.query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
             }
 
-            // TODO: Map back to param Client and return it
-
-            return Client;
+            return client;
         }
 
         public bool DeleteClient(int id)
         {
-            // TODO: Delete Client
-            // TODO: Use try catch to see if SQL was made successfully
             try
             {
-                query = "DELETE FROM Clients WHERE ID = " + id.ToString() + ";";
-                MySqlCommand SqlQuery = new MySqlCommand(query, SessionHelper.cnn);
-                SqlQuery.ExecuteNonQuery();
+                this.query = "DELETE FROM Clients WHERE ID = " + id.ToString() + ";";
+                using (var connection = RepositoryHelper.OpenMySQLConnetion())
+                using (var command = new MySqlCommand(this.query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
                 return true;
             }
-            catch(MySqlException e)
+            catch(Exception e)
             {
                 return false;
             }

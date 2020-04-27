@@ -50,6 +50,7 @@
             this.addEditButton.TabIndex = 12;
             this.addEditButton.Text = "Запази";
             this.addEditButton.UseVisualStyleBackColor = false;
+            this.addEditButton.Click += new System.EventHandler(this.AddEditButton_Click);
             // 
             // personalDocumentNumberTextBox
             // 

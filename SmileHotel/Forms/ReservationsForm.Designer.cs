@@ -35,12 +35,12 @@ namespace SmileHotel.Forms
             this.editUserButton = new System.Windows.Forms.Button();
             this.addUserButton = new System.Windows.Forms.Button();
             this.dataGridView1 = new SmileHotel.Compoentns.ExtendedDataGridView();
+            this.reservationBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.clientDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.roomDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.userDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.startDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.durationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.reservationBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.reservationBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -112,10 +112,14 @@ namespace SmileHotel.Forms
             this.dataGridView1.Size = new System.Drawing.Size(776, 375);
             this.dataGridView1.TabIndex = 12;
             // 
+            // reservationBindingSource
+            // 
+            this.reservationBindingSource.DataSource = typeof(SmileHotel.Models.Reservation);
+            // 
             // clientDataGridViewTextBoxColumn
             // 
             this.clientDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.clientDataGridViewTextBoxColumn.DataPropertyName = "Client";
+            this.clientDataGridViewTextBoxColumn.DataPropertyName = "Client.Name";
             this.clientDataGridViewTextBoxColumn.HeaderText = "Клиент";
             this.clientDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.clientDataGridViewTextBoxColumn.Name = "clientDataGridViewTextBoxColumn";
@@ -124,7 +128,7 @@ namespace SmileHotel.Forms
             // roomDataGridViewTextBoxColumn
             // 
             this.roomDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.roomDataGridViewTextBoxColumn.DataPropertyName = "Room";
+            this.roomDataGridViewTextBoxColumn.DataPropertyName = "Room.Number";
             this.roomDataGridViewTextBoxColumn.HeaderText = "Стая";
             this.roomDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.roomDataGridViewTextBoxColumn.Name = "roomDataGridViewTextBoxColumn";
@@ -133,7 +137,7 @@ namespace SmileHotel.Forms
             // userDataGridViewTextBoxColumn
             // 
             this.userDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.userDataGridViewTextBoxColumn.DataPropertyName = "User";
+            this.userDataGridViewTextBoxColumn.DataPropertyName = "User.Name";
             this.userDataGridViewTextBoxColumn.HeaderText = "Създател";
             this.userDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.userDataGridViewTextBoxColumn.Name = "userDataGridViewTextBoxColumn";
@@ -156,10 +160,6 @@ namespace SmileHotel.Forms
             this.durationDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.durationDataGridViewTextBoxColumn.Name = "durationDataGridViewTextBoxColumn";
             this.durationDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // reservationBindingSource
-            // 
-            this.reservationBindingSource.DataSource = typeof(SmileHotel.Models.Reservation);
             // 
             // ReservationsForm
             // 
@@ -185,11 +185,11 @@ namespace SmileHotel.Forms
         private System.Windows.Forms.Button editUserButton;
         private System.Windows.Forms.Button addUserButton;
         private ExtendedDataGridView dataGridView1;
+        private System.Windows.Forms.BindingSource reservationBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn clientDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn roomDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn userDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn startDateDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn durationDataGridViewTextBoxColumn;
-        private System.Windows.Forms.BindingSource reservationBindingSource;
     }
 }

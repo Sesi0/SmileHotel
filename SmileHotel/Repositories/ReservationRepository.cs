@@ -2,72 +2,87 @@
 using SmileHotel.Models;
 using SmileHotel.Helpers;
 using MySql.Data.MySqlClient;
-namespace SmileHotel.Repositories
+using System;
+using System.Globalization;
 
 namespace SmileHotel.Repositories
-{ 
+{
     public class ReservationRepository
     {
         private string query;
-        private MySqlDataReader DataReader;
+
         public List<Reservation> GetAllReservations()
         {
             var reservations = new List<Reservation>();
+            this.query = "SELECT * FROM Reservations;";
 
-            // TODO: Get reservations from DB
-            query = "SELECT * FROM Reservations;";
-            MySqlCommand SqlQuery = new MySqlCommand(query, SessionHelper.cnn);
-            DataReader = SqlQuery.ExecuteReader();
-            Reservation toAdd = new Reservation();
-            while (DataReader.Read())
+            using (var connection = RepositoryHelper.OpenMySQLConnetion())
+            using (var command = new MySqlCommand(this.query, connection))
+            using (var dataReader = command.ExecuteReader())
             {
-                toAdd.Id = DataReader.GetInt32(0);
-                toAdd.StartDate = DataReader.GetDateTime(4);
-                toAdd.Duration = DataReader.GetInt32(5);
+                while (dataReader.Read())
+                {
+                    Reservation toAdd = new Reservation();
+                    toAdd.Id = dataReader.GetInt32(0);
+                    toAdd.StartDate = dataReader.GetDateTime(4);
+                    toAdd.Duration = dataReader.GetInt32(5);
+                    reservations.Add(this.AssignReservation(toAdd));
+                }
             }
-            DataReader.Close();
-            List<Reservation> toReturn = new List<Reservation>();
-            foreach (Reservation res in reservations)
-            {
-                toReturn.Add(AssignReservation(res));
-            }
-            return toReturn;
+
+            return reservations;
         }
 
         public Reservation GetReservation(int id)
         {
-            // TODO: Get reservation from DB
-
             var reservation = new Reservation();
-            query = "SELECT * FROM Reservations;";
-            MySqlCommand SqlQuery = new MySqlCommand(query, SessionHelper.cnn);
-            DataReader = SqlQuery.ExecuteReader();
-            DataReader.Read();
-            reservation.Id = DataReader.GetInt32(0);
-            reservation.StartDate = DataReader.GetDateTime(4);
-            reservation.Duration = DataReader.GetInt32(5);
-            DataReader.Close();
-            reservation = AssignReservation(reservation);
+            this.query = "SELECT * FROM Reservations;";
 
-            return reservation;
+            using (var connection = RepositoryHelper.OpenMySQLConnetion())
+            using (var command = new MySqlCommand(this.query, connection))
+            using (var dataReader = command.ExecuteReader())
+            {
+                dataReader.Read();
+                reservation.Id = dataReader.GetInt32(0);
+                reservation.StartDate = dataReader.GetDateTime(4);
+                reservation.Duration = dataReader.GetInt32(5);
+            }
+            
+            return this.AssignReservation(reservation);
         }
 
         public Reservation AssignReservation(Reservation reservation)
         {
-            query = "SELECT Rooms_idRooms, Clients_idClients, Users_idUsers FROM Reservations WHERE ID = " + reservation.Id + ";";
-            MySqlCommand SqlQuery = new MySqlCommand(query, SessionHelper.cnn);
-            DataReader = SqlQuery.ExecuteReader();
-            DataReader.Read();
-            int RoomID = DataReader.GetInt32(0);
-            int ClientID = DataReader.GetInt32(1);
-            int UserID = DataReader.GetInt32(2);
-            DataReader.Close();
-            RoomRepository roomRepository = new RoomRepository();
-            reservation.Room = roomRepository.GetRoom(RoomID);
-            ClientRepository clientRepository = new ClientRepository();
-            reservation.Client = clientRepository.GetClient(ClientID);
-            UserRepository userRepository = new UserRepository();
-            reservation.User = userRepository.GetUser(UserID);
+            try
+            {
+                this.query = "SELECT Rooms_idRooms, Clients_idClients, Users_idUsers FROM Reservations WHERE ID = " + reservation.Id + ";";
+
+                int roomID = 0;
+                int clientID = 0;
+                int userID = 0;
+
+                using (var connection = RepositoryHelper.OpenMySQLConnetion())
+                using (var command = new MySqlCommand(this.query, connection))
+                using (var dataReader = command.ExecuteReader())
+                {
+                    dataReader.Read();
+                    roomID = dataReader.GetInt32(0);
+                    clientID = dataReader.GetInt32(1);
+                    userID = dataReader.GetInt32(2);
+                }
+
+                RoomRepository roomRepository = new RoomRepository();
+                reservation.Room = roomRepository.GetRoom(roomID);
+                ClientRepository clientRepository = new ClientRepository();
+                reservation.Client = clientRepository.GetClient(clientID);
+                UserRepository userRepository = new UserRepository();
+                reservation.User = userRepository.GetUser(userID);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
             return reservation;
         }
 
@@ -75,16 +90,20 @@ namespace SmileHotel.Repositories
         {
             if (reservation.Id <= 0)
             {
-                // TODO: Add reservation
-                query = "SELECT ID FROM Reservations;";
-                MySqlCommand SqlQuery = new MySqlCommand(query, SessionHelper.cnn);
-                DataReader = SqlQuery.ExecuteReader();
                 List<int> IDs = new List<int>();
-                while (DataReader.Read())
+                this.query = "SELECT ID FROM Reservations;";
+
+                using (var connection = RepositoryHelper.OpenMySQLConnetion())
+                using (var command = new MySqlCommand(this.query, connection))
+                using (var dataReader = command.ExecuteReader())
                 {
-                    IDs.Add(DataReader.GetInt32(0));
+                    
+                    while (dataReader.Read())
+                    {
+                        IDs.Add(dataReader.GetInt32(0));
+                    }
                 }
-                DataReader.Close();
+
                 int newID = 0;
                 foreach (int ID in IDs)
                 {
@@ -93,33 +112,45 @@ namespace SmileHotel.Repositories
                         newID = ID;
                     }
                 }
+
                 newID++;
-                query = "INSERT INTO Reservations (`ID`, `Rooms_idRooms`, `Clietns_idClients`, `Users_idUsers`, `StartDate`, `Duration`) VALUES ('" + newID.ToString() + "','" + reservation.Room.Id.ToString() + "', '" + reservation.Client.Id.ToString() + "' , '" + reservation.User.Id.ToString() + "', '" + reservation.StartDate.ToString() + "', '" + reservation.Duration.ToString() + "');";
-                SqlQuery = new MySqlCommand(query, SessionHelper.cnn);
-                SqlQuery.ExecuteNonQuery();
+
+                this.query = "INSERT INTO Reservations (`ID`, `Rooms_idRooms`, `Clients_idClients`, `Users_idUsers`, `StartDate`, `Duration`) VALUES ('" + newID.ToString() + "','" + reservation.Room.Id.ToString() + "', '" + reservation.Client.Id.ToString() + "' , '" + reservation.User.Id.ToString() + "', '" + reservation.StartDate.ToString("yyyy-MM-dd") + "', '" + reservation.Duration.ToString() + "');";
+                using (var connection = RepositoryHelper.OpenMySQLConnetion())
+                using (var command = new MySqlCommand(this.query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
             }
             else
             {
-                // TODO: Update reservation
+                this.query = "UPDATE Reservations " +
+                                    "SET Rooms_idRooms = " + reservation.Room.Id+ " , Clients_idClients = " + reservation.Client.Id + " , StartDate = '" + reservation.StartDate.ToString("yyyy-MM-dd") + "', Duration = '" + reservation.Duration.ToString() + "'" +
+                                    " WHERE ID = " + reservation.Id.ToString() + ";";
+                using (var connection = RepositoryHelper.OpenMySQLConnetion())
+                using (var command = new MySqlCommand(this.query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
             }
-
-            // TODO: Map back to param reservation and return it
 
             return reservation;
         }
 
         public bool DeleteReservation(int id)
         {
-            // TODO: Delete reservation
-            // TODO: Use try catch to see if SQL was made successfully
             try
             {
-                query = "DELETE FROM Reservations WHERE ID = " + id.ToString() + ";";
-                MySqlCommand SqlQuery = new MySqlCommand(query, SessionHelper.cnn);
-                SqlQuery.ExecuteNonQuery();
+                this.query = "DELETE FROM Reservations WHERE ID = " + id.ToString() + ";";
+                using (var connection = RepositoryHelper.OpenMySQLConnetion())
+                using (var command = new MySqlCommand(this.query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
                 return true;
             }
-            catch (MySqlException e)
+            catch (Exception e)
             {
                 return false;
             }

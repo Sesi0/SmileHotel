@@ -4,31 +4,33 @@ using System.Data.SqlClient;
 using MySql.Data.MySqlClient;
 using System.Globalization;
 using SmileHotel.Helpers;
+using System;
 
 namespace SmileHotel.Repositories
 {
     public class RoomRepository
     {
         private string query;
-        private MySqlDataReader DataReader;
+
         public List<Room> GetAllRooms()
         {
             var rooms = new List<Room>();
 
-            // TODO: Get rooms from DB
-            query = "SELECT * FROM Rooms;";
-            MySqlCommand SqlQuery = new MySqlCommand(query, SessionHelper.cnn);
-            DataReader = SqlQuery.ExecuteReader();
-            while (DataReader.Read())
+            this.query = "SELECT * FROM Rooms;";
+            using (var connection = RepositoryHelper.OpenMySQLConnetion())
+            using (var command = new MySqlCommand(this.query, connection))
+            using (var dataReader = command.ExecuteReader())
             {
-                Room ToAdd = new Room();
-                ToAdd.Id = DataReader.GetInt32(0);
-                ToAdd.Number = DataReader.GetInt32(1).ToString();
-                ToAdd.Capacity = DataReader.GetInt32(2);
-                ToAdd.PricePerNight = DataReader.GetFloat(3);
-                rooms.Add(ToAdd);
+                while (dataReader.Read())
+                {
+                    Room ToAdd = new Room();
+                    ToAdd.Id = dataReader.GetInt32(0);
+                    ToAdd.Number = dataReader.GetInt32(1);
+                    ToAdd.Capacity = dataReader.GetInt32(2);
+                    ToAdd.PricePerNight = dataReader.GetFloat(3);
+                    rooms.Add(ToAdd);
+                }
             }
-            DataReader.Close();
 
             return rooms;
         }
@@ -36,18 +38,19 @@ namespace SmileHotel.Repositories
         public Room GetRoom(int id)
         {
             var room = new Room();
+            this.query = "SELECT * FROM Rooms WHERE ID = " + id.ToString() + ";";
 
-            // TODO: Get room from DB
+            using (var connection = RepositoryHelper.OpenMySQLConnetion())
+            using (var command = new MySqlCommand(this.query, connection))
+            using (var dataReader = command.ExecuteReader())
+            {
+                dataReader.Read();
+                room.Id = dataReader.GetInt32(0);
+                room.Number = dataReader.GetInt32(1);
+                room.Capacity = dataReader.GetInt32(2);
+                room.PricePerNight = dataReader.GetFloat(3);
+            }
 
-            query = "SELECT * FROM Rooms WHERE ID = " + id.ToString() + ";";
-            MySqlCommand SqlQuery = new MySqlCommand(query, SessionHelper.cnn);
-            DataReader = SqlQuery.ExecuteReader();
-            DataReader.ReadAsync();
-            room.Id = DataReader.GetInt32(0);
-            room.Number = DataReader.GetString(1);
-            room.Capacity = DataReader.GetInt32(2);
-            room.PricePerNight = DataReader.GetFloat(3);
-            DataReader.Close();
             return room;
         }
 
@@ -55,29 +58,36 @@ namespace SmileHotel.Repositories
         {
             if (room.Id <= 0)
             {
-                // TODO: Add room
-                List<Room> rooms = GetAllRooms();
-                int maxID = 0;
+                List<Room> rooms = this.GetAllRooms();
+                int maxID = 1;
                 foreach (Room room1 in rooms)
                 {
                     if (maxID < room1.Id)
                     {
                         maxID = room1.Id;
                     }
+
+                    maxID++;
                 }
-                maxID++;
-                query = "INSERT INTO Rooms (`ID`, `RoomNumber`, `RoomCapacity`, `PricePerNight`) VALUES ('" + maxID.ToString() + "','" + room.Number + "', '" + room.Capacity.ToString() + "' , '" + room.PricePerNight.ToString("F", CultureInfo.CreateSpecificCulture("en-US")) + "');";
-                MySqlCommand SqlQuery = new MySqlCommand(query, SessionHelper.cnn);
-                SqlQuery.ExecuteNonQuery();
+
+
+                this.query = "INSERT INTO Rooms (`ID`, `RoomNumber`, `RoomCapacity`, `PricePerNight`) VALUES ('" + maxID.ToString() + "','" + room.Number + "', '" + room.Capacity.ToString() + "' , '" + room.PricePerNight.ToString("F", CultureInfo.CreateSpecificCulture("en-US")) + "');";
+                using (var connection = RepositoryHelper.OpenMySQLConnetion())
+                using (var command = new MySqlCommand(this.query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
             }
             else
             {
-                // TODO: Update room
-                query = "UPDATE Rooms " +
+                this.query = "UPDATE Rooms " +
                     "SET RoomNumber = '" + room.Number + "' , RoomCapacity = '" + room.Capacity.ToString() + "' , PricePerNight = '" + room.PricePerNight.ToString() + "'" +
                     " WHERE ID = " + room.Id.ToString() + ";";
-                MySqlCommand SqlQuery = new MySqlCommand(query, SessionHelper.cnn);
-                SqlQuery.ExecuteNonQuery();
+                using (var connection = RepositoryHelper.OpenMySQLConnetion())
+                using (var command = new MySqlCommand(this.query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
             }
 
             return room;
@@ -85,18 +95,20 @@ namespace SmileHotel.Repositories
 
         public bool DeleteRoom(int id)
         {
-            // TODO: Delete room
-            // TODO: Use try catch to see if SQL was made successfully
             try
             {
-                query = "DELETE FROM Rooms WHERE ID = " + id.ToString() + ";";
-                MySqlCommand SqlQuery = new MySqlCommand(query, SessionHelper.cnn);
-                SqlQuery.ExecuteNonQuery();
+                this.query = "DELETE FROM Rooms WHERE ID = " + id.ToString() + ";";
+                using (var connection = RepositoryHelper.OpenMySQLConnetion())
+                using (var command = new MySqlCommand(this.query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
             }
-            catch (MySqlException e)
+            catch (Exception e)
             {
                 return false;
             }
+
             return true;
         }
     }

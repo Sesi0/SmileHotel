@@ -16,6 +16,11 @@ namespace SmileHotel.Forms
 
         private void ReservationsForm_Load(object sender, System.EventArgs e)
         {
+            this.RefreshReservations();
+        }
+
+        private void RefreshReservations()
+        {
             this.reservationBindingSource.DataSource = this.reservationRepository.GetAllReservations();
         }
 
@@ -44,8 +49,8 @@ namespace SmileHotel.Forms
 
                 if (reservation != null)
                 {
-                    reservation = this.reservationRepository.AddOrUpdateReservation(reservation);
-                    this.reservationBindingSource.Add(reservation);
+                    this.reservationRepository.AddOrUpdateReservation(reservation);
+                    this.RefreshReservations();
                 }
             }
         }
@@ -69,8 +74,8 @@ namespace SmileHotel.Forms
 
                 if (reservation != null)
                 {
-                    reservation = this.reservationRepository.AddOrUpdateReservation(reservation);
-                    this.reservationBindingSource[this.reservationBindingSource.Position] = reservation;
+                    this.reservationRepository.AddOrUpdateReservation(reservation);
+                    this.RefreshReservations();
                 }
             }
         }

@@ -16,7 +16,7 @@ namespace SmileHotel.Forms
             }
             else
             {
-                this.numberTextBox.Text = room.Number;
+                this.numberTextBox.Text = room.Number.ToString();
                 this.capacityTextBox.Text = room.Capacity.ToString();
                 this.pricePerNightTextBox.Text = room.PricePerNight.ToString("F");
             }
@@ -30,10 +30,11 @@ namespace SmileHotel.Forms
         {
             try
             {
-                this.Room.Number = this.numberTextBox.Text;
+                int.TryParse(this.capacityTextBox.Text, out var number);
                 int.TryParse(this.capacityTextBox.Text, out var capacity);
                 float.TryParse(this.pricePerNightTextBox.Text, out var pricePerNight);
 
+                this.Room.Number = number;
                 this.Room.Capacity = capacity;
                 this.Room.PricePerNight = pricePerNight;
 
