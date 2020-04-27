@@ -6,7 +6,7 @@ namespace SmileHotel.Forms
 {
     public partial class ReportsForm : Form
     {
-        private ReservationRepository reservationRepository;
+        private readonly ReservationRepository reservationRepository;
 
         public ReportsForm()
         {
@@ -21,8 +21,8 @@ namespace SmileHotel.Forms
             switch (this.reportsComboBox.SelectedIndex)
             {
                 case 0:
+                    this.reservationBindingSource.DataSource = this.reservationRepository.GetActiveReservations();
                     this.extendedDataGridView1.Visible = true;
-                    this.reservationBindingSource.DataSource = this.reservationRepository.GetAllReservations();
                     break;
                 case 1:
                     break;

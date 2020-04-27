@@ -197,9 +197,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Reports\ActiveReservationsReport.rdlc">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\SmileHotel.Models.Client.datasource" />
     <None Include="Properties\DataSources\SmileHotel.Models.Reservation.datasource" />

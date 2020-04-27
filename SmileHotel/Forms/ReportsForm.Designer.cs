@@ -32,12 +32,9 @@
             this.reportsComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.extendedDataGridView1 = new SmileHotel.Compoentns.ExtendedDataGridView();
-            this.reservationBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.clientDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.roomDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.userDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.startDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.durationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.reservationBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.extendedDataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.reservationBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -70,9 +67,6 @@
             this.extendedDataGridView1.AutoGenerateColumns = false;
             this.extendedDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.extendedDataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.clientDataGridViewTextBoxColumn,
-            this.roomDataGridViewTextBoxColumn,
-            this.userDataGridViewTextBoxColumn,
             this.startDateDataGridViewTextBoxColumn,
             this.durationDataGridViewTextBoxColumn});
             this.extendedDataGridView1.DataSource = this.reservationBindingSource;
@@ -84,37 +78,7 @@
             this.extendedDataGridView1.RowTemplate.Height = 24;
             this.extendedDataGridView1.Size = new System.Drawing.Size(775, 379);
             this.extendedDataGridView1.TabIndex = 2;
-            // 
-            // reservationBindingSource
-            // 
-            this.reservationBindingSource.DataSource = typeof(SmileHotel.Models.Reservation);
-            // 
-            // clientDataGridViewTextBoxColumn
-            // 
-            this.clientDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.clientDataGridViewTextBoxColumn.DataPropertyName = "Client.Name";
-            this.clientDataGridViewTextBoxColumn.HeaderText = "Клиент";
-            this.clientDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.clientDataGridViewTextBoxColumn.Name = "clientDataGridViewTextBoxColumn";
-            this.clientDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // roomDataGridViewTextBoxColumn
-            // 
-            this.roomDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.roomDataGridViewTextBoxColumn.DataPropertyName = "Room.Number";
-            this.roomDataGridViewTextBoxColumn.HeaderText = "Стая";
-            this.roomDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.roomDataGridViewTextBoxColumn.Name = "roomDataGridViewTextBoxColumn";
-            this.roomDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // userDataGridViewTextBoxColumn
-            // 
-            this.userDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.userDataGridViewTextBoxColumn.DataPropertyName = "User.Name";
-            this.userDataGridViewTextBoxColumn.HeaderText = "Създадена от";
-            this.userDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.userDataGridViewTextBoxColumn.Name = "userDataGridViewTextBoxColumn";
-            this.userDataGridViewTextBoxColumn.ReadOnly = true;
+            this.extendedDataGridView1.Visible = false;
             // 
             // startDateDataGridViewTextBoxColumn
             // 
@@ -133,6 +97,10 @@
             this.durationDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.durationDataGridViewTextBoxColumn.Name = "durationDataGridViewTextBoxColumn";
             this.durationDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // reservationBindingSource
+            // 
+            this.reservationBindingSource.DataSource = typeof(SmileHotel.Models.Reservation);
             // 
             // ReportsForm
             // 
