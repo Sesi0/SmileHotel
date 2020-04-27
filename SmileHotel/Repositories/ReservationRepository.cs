@@ -34,6 +34,28 @@ namespace SmileHotel.Repositories
             return reservations.Select(r => this.AssignReservation(r)).ToList();
         }
 
+        public List<Reservation> GetAllReservationsForRoom(int IDRoom)
+        {
+            var reservations = new List<Reservation>();
+            this.query = "SELECT * FROM Reservations WHERE Rooms_idRooms = '" + IDRoom.ToString() + ";";
+
+            using (var connection = RepositoryHelper.OpenMySQLConnetion())
+            using (var command = new MySqlCommand(this.query, connection))
+            using (var dataReader = command.ExecuteReader())
+            {
+                while (dataReader.Read())
+                {
+                    Reservation toAdd = new Reservation();
+                    toAdd.Id = dataReader.GetInt32(0);
+                    toAdd.StartDate = dataReader.GetDateTime(4);
+                    toAdd.Duration = dataReader.GetInt32(5);
+                    reservations.Add(toAdd);
+                }
+            }
+
+            return reservations.Select(r => this.AssignReservation(r)).ToList();
+        }
+
         public Reservation GetReservation(int id)
         {
             var reservation = new Reservation();
@@ -165,16 +187,13 @@ namespace SmileHotel.Repositories
             foreach(Reservation reservation in reservations)
             {
                 ToCompare = reservation.StartDate;
-                if(DateTime.Compare(Current,ToCompare) == 0)
+                if(Current.Date == ToCompare.Date)
                 {
                     ToReturn.Add(reservation);
                 }
                 else if (DateTime.Compare(Current, ToCompare) > 0)
                 {
-                    for(int i = 0;i < reservation.Duration; i++)
-                    {
-                        ToCompare.AddDays(1);
-                    }
+                    ToCompare.AddDays(reservation.Duration);
                     if (DateTime.Compare(Current, ToCompare) < 0)
                     {
                         ToReturn.Add(reservation);
@@ -182,6 +201,93 @@ namespace SmileHotel.Repositories
                 }
             }
             return ToReturn;
+        }
+        public int GetProductivityForAroom(int RoomID, DateTime MonthStart)
+        {
+            int Productivity = 0;
+            var reservations = GetAllReservationsForRoom(RoomID);
+            DateTime toCompare = new DateTime();
+            DateTime CurrentMonth = MonthStart;
+            foreach (Reservation res in reservations)
+            {
+                DateTime CurrentMonth = MonthStart;
+                toCompare = res.StartDate;
+                if (DateTime.Compare(CurrentMonth, toCompare) <= 0)
+                {
+                    //reservation starts afer moth start
+                    CurrentMonth = CurrentMonth.AddMonths(1);
+                    if (DateTime.Compare(CurrentMonth, toCompare) > 0)
+                    {
+                        //reservation starts requested month
+                        toCompare.AddDays(res.Duration);
+                        if (DateTime.Compare(CurrentMonth, toCompare) >= 0)
+                        {
+                            //reservation stays in current month
+                            Productivity = Productivity + res.Duration;
+                        }
+                        else
+                        {
+                            //reservation extemds past current month
+                            Productivity = Productivity + (res.Duration - toCompare.Day);
+                        }
+                    }
+                }
+                else
+                {
+                    //reservation starts before requested month
+                    toCompare.AddDays(res.Duration);
+                    if (DateTime.Compare(CurrentMonth, toCompare) > 0)
+                    {
+                        //Reservation starts previous month but extends into requested one
+                        Productivity = Productivity + toCompare.Day;
+                    }
+                }
+
+            }
+            return Productivity;
+        }
+        public int GetProductivityForHotel(DateTime MonthStart)
+        {
+            int Productivity = 0;
+            var reservations = GetAllReservations();
+            DateTime toCompare = new DateTime();
+            foreach (Reservation res in reservations)
+            {
+                DateTime CurrentMonth = MonthStart;
+                toCompare = res.StartDate;
+                if (DateTime.Compare(CurrentMonth, toCompare) <= 0)
+                {
+                    //reservation starts afer moth start
+                    CurrentMonth = CurrentMonth.AddMonths(1);
+                    if (DateTime.Compare(CurrentMonth, toCompare) > 0)
+                    {
+                        //reservation starts requested month
+                        toCompare.AddDays(res.Duration);
+                        if (DateTime.Compare(CurrentMonth, toCompare) >= 0)
+                        {
+                            //reservation stays in current month
+                            Productivity = Productivity + res.Duration;
+                        }
+                        else
+                        {
+                            //reservation extemds past current month
+                            Productivity = Productivity + (res.Duration - toCompare.Day);
+                        }
+                    }
+                }
+                else
+                {
+                    //reservation starts before requested month
+                    toCompare.AddDays(res.Duration);
+                    if (DateTime.Compare(CurrentMonth, toCompare) > 0)
+                    {
+                        //Reservation starts previous month but extends into requested one
+                        Productivity = Productivity + toCompare.Day;
+                    }
+                }
+
+            }
+            return Productivity;
         }
     }
 }

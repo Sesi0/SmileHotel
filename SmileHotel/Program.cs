@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
 using SmileHotel.Forms;
+using SmileHotel.Models;
+using System.Collections.Generic;
+using SmileHotel.Repositories;
 namespace SmileHotel
 {
     static class Program
