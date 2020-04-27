@@ -155,5 +155,32 @@ namespace SmileHotel.Repositories
                 return false;
             }
         }
+        public List<Reservation> GetActiveReservations()
+        {
+            List<Reservation> ToReturn = new List<Reservation>();
+            DateTime Current = DateTime.Now;
+            DateTime ToCompare = new DateTime();
+            List<Reservation> reservations = GetAllReservations();
+            foreach(Reservation reservation in reservations)
+            {
+                ToCompare = reservation.StartDate;
+                if(DateTime.Compare(Current,ToCompare) == 0)
+                {
+                    ToReturn.Add(reservation);
+                }
+                else if (DateTime.Compare(Current, ToCompare) > 0)
+                {
+                    for(int i = 0;i < reservation.Duration; i++)
+                    {
+                        ToCompare.AddDays(1);
+                    }
+                    if (DateTime.Compare(Current, ToCompare) < 0)
+                    {
+                        ToReturn.Add(reservation);
+                    }
+                }
+            }
+            return ToReturn;
+        }
     }
 }
