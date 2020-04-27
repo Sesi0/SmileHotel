@@ -4,7 +4,7 @@ namespace SmileHotel.Repositories
 {
     public static class RepositoryHelper
     {
-        private static string connetionString = @"server=db4free.net;database=smilehotel;UID=smilehoteluser;password=3_MyZxzwFFu5_kg";
+        private static string connetionString = @"server=db4free.net;database=smilehotel;UID=smilehoteluser;password=3_MyZxzwFFu5_kg;default command timeout=60000";
 
         public static MySqlConnection OpenMySQLConnetion()
         {

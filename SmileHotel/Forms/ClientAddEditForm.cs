@@ -17,6 +17,7 @@ namespace SmileHotel.Forms
             else
             {
                 this.nameTextBox.Text = client.Name;
+                this.personalDocumentNumberTextBox.Text = client.PersonalDocNumber;
                 this.phoneNumberTextBox.Text = client.PhoneNumber;
             }
 

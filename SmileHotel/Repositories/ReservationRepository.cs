@@ -4,6 +4,7 @@ using SmileHotel.Helpers;
 using MySql.Data.MySqlClient;
 using System;
 using System.Globalization;
+using System.Linq;
 
 namespace SmileHotel.Repositories
 {
@@ -26,11 +27,11 @@ namespace SmileHotel.Repositories
                     toAdd.Id = dataReader.GetInt32(0);
                     toAdd.StartDate = dataReader.GetDateTime(4);
                     toAdd.Duration = dataReader.GetInt32(5);
-                    reservations.Add(this.AssignReservation(toAdd));
+                    reservations.Add(toAdd);
                 }
             }
 
-            return reservations;
+            return reservations.Select(r => this.AssignReservation(r)).ToList();
         }
 
         public Reservation GetReservation(int id)

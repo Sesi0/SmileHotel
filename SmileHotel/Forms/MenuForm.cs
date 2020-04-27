@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using SmileHotel.Helpers;
 
 namespace SmileHotel.Forms
 {
@@ -10,6 +9,7 @@ namespace SmileHotel.Forms
         private ReservationsForm reservationsForm;
         private UsersForm userForm;
         private ClientsForm clientForm;
+        private ReportsForm reportsForm;
 
         public MenuForm()
         {
@@ -47,6 +47,13 @@ namespace SmileHotel.Forms
             this.reservationsForm = new ReservationsForm();
             this.reservationsForm.WindowState = FormWindowState.Normal;
             this.reservationsForm.Show();
+        }
+
+        private void ReportsMenuItem_Click(object sender, EventArgs e)
+        {
+            this.reportsForm = new ReportsForm();
+            this.reportsForm.WindowState = FormWindowState.Normal;
+            this.reportsForm.Show();
         }
     }
 }

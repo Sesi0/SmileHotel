@@ -1,4 +1,6 @@
-﻿namespace SmileHotel.Models
+﻿using System.Text.RegularExpressions;
+
+namespace SmileHotel.Models
 {
     public class User
     {
@@ -14,7 +16,8 @@
         {
             if (string.IsNullOrEmpty(this.Name) ||
                 string.IsNullOrEmpty(this.Password) ||
-                string.IsNullOrEmpty(this.PhoneNumber))
+                string.IsNullOrEmpty(this.PhoneNumber) ||
+                !Regex.IsMatch(this.PhoneNumber, @"(^\+|0{1})\d{8,9}$"))
             {
                 return false;
             }

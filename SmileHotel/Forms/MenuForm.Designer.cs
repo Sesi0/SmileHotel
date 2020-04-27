@@ -33,6 +33,7 @@
             this.reservationsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.roomsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.customersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reportsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.usersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
@@ -46,11 +47,12 @@
             this.reservationsMenuItem,
             this.roomsMenuItem,
             this.customersMenuItem,
+            this.reportsMenuItem,
             this.usersMenuItem,
             this.exitMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(447, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(539, 28);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -80,6 +82,13 @@
             this.customersMenuItem.Text = "Клиенти";
             this.customersMenuItem.Click += new System.EventHandler(this.ClientsMenuItem_Click);
             // 
+            // reportsMenuItem
+            // 
+            this.reportsMenuItem.Name = "reportsMenuItem";
+            this.reportsMenuItem.Size = new System.Drawing.Size(82, 24);
+            this.reportsMenuItem.Text = "Справки";
+            this.reportsMenuItem.Click += new System.EventHandler(this.ReportsMenuItem_Click);
+            // 
             // usersMenuItem
             // 
             this.usersMenuItem.Name = "usersMenuItem";
@@ -98,7 +107,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(447, 32);
+            this.ClientSize = new System.Drawing.Size(539, 32);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MenuForm";
@@ -119,6 +128,7 @@
         private System.Windows.Forms.ToolStripMenuItem customersMenuItem;
         private System.Windows.Forms.ToolStripMenuItem usersMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem reportsMenuItem;
     }
 }
 
