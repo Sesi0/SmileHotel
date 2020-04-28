@@ -37,7 +37,7 @@ namespace SmileHotel.Repositories
         public List<Reservation> GetAllReservationsForRoom(int IDRoom)
         {
             var reservations = new List<Reservation>();
-            this.query = "SELECT * FROM Reservations WHERE Rooms_idRooms = '" + IDRoom.ToString() + ";";
+            this.query = "SELECT * FROM Reservations WHERE Rooms_idRooms = " + IDRoom.ToString() + ";";
 
             using (var connection = RepositoryHelper.OpenMySQLConnetion())
             using (var command = new MySqlCommand(this.query, connection))
@@ -59,7 +59,7 @@ namespace SmileHotel.Repositories
         public Reservation GetReservation(int id)
         {
             var reservation = new Reservation();
-            this.query = "SELECT * FROM Reservations;";
+            this.query = "SELECT * FROM Reservations WHERE Rooms_idRooms = " + id.ToString() + ";";
 
             using (var connection = RepositoryHelper.OpenMySQLConnetion())
             using (var command = new MySqlCommand(this.query, connection))
@@ -239,7 +239,14 @@ namespace SmileHotel.Repositories
                     if (DateTime.Compare(CurrentMonth, toCompare) > 0)
                     {
                         //Reservation starts previous month but extends into requested one
-                        Productivity = Productivity + toCompare.Day;
+                        toCompare.AddDays(-(res.Duration));
+                        for (int i = 0; i < res.Duration; i++)
+                        {
+                            if (DateTime.Compare(CurrentMonth, toCompare) > 0)
+                            {
+                                Productivity++;
+                            }
+                        }
                     }
                 }
 
@@ -251,9 +258,10 @@ namespace SmileHotel.Repositories
             int Productivity = 0;
             var reservations = GetAllReservations();
             DateTime toCompare = new DateTime();
+            DateTime CurrentMonth = MonthStart;
             foreach (Reservation res in reservations)
             {
-                DateTime CurrentMonth = MonthStart;
+                CurrentMonth = MonthStart;
                 toCompare = res.StartDate;
                 if (DateTime.Compare(CurrentMonth, toCompare) <= 0)
                 {
@@ -282,7 +290,14 @@ namespace SmileHotel.Repositories
                     if (DateTime.Compare(CurrentMonth, toCompare) > 0)
                     {
                         //Reservation starts previous month but extends into requested one
-                        Productivity = Productivity + toCompare.Day;
+                        toCompare.AddDays(-(res.Duration));
+                        for(int i = 0; i < res.Duration;i++)
+                        {
+                            if (DateTime.Compare(CurrentMonth, toCompare) > 0)
+                            {
+                                Productivity++;
+                            }
+                        }
                     }
                 }
 
