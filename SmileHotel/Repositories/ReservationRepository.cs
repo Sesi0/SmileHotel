@@ -210,7 +210,7 @@ namespace SmileHotel.Repositories
             DateTime CurrentMonth = MonthStart;
             foreach (Reservation res in reservations)
             {
-                DateTime CurrentMonth = MonthStart;
+                CurrentMonth = MonthStart;
                 toCompare = res.StartDate;
                 if (DateTime.Compare(CurrentMonth, toCompare) <= 0)
                 {
